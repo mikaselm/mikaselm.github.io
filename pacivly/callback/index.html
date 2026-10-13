@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Pacivly: returning to the app</title>
+<!--
+  Pacivly Greenway OAuth callback. NOT PUBLISHED (file only; publish the pacivly/ folder at the root of mikaselm.github.io). Intended URL: https://mikaselm.github.io/pacivly/callback
+  Greenway refused custom schemes, so this static page is the registered redirect_uri. It does exactly one thing: forwards the query string
+  (code, state, error, error_description) UNCHANGED to the app's own redirect, which the app routes by state prefix "gw.".
+  It stores nothing, sends nothing anywhere, and never reads or logs the code. Android only: the target scheme is Pacivly's.
+-->
+<style>
+  body { font: 18px/1.5 system-ui, sans-serif; max-width: 30rem; margin: 3rem auto; padding: 0 1rem; color: #222; }
+  a.btn { display: inline-block; margin-top: 1rem; padding: .8rem 1.2rem; background: #333; color: #fff; border-radius: .5rem; text-decoration: none; }
+</style>
+</head>
+<body>
+<h1>Returning to Pacivly</h1>
+<p id="msg">Opening the app to finish signing in.</p>
+<a id="open" class="btn" href="com.mikas.wearables:/oauth2redirect">Open Pacivly</a>
+<script>
+  // The whole job: same query string, app's redirect. location.search keeps its percent-encoding exactly as Greenway sent it.
+  var target = "com.mikas.wearables:/oauth2redirect" + window.location.search;
+  document.getElementById("open").href = target;
+  if (!window.location.search) {
+    document.getElementById("msg").textContent = "Nothing to hand back. Start the sign-in from inside Pacivly.";
+  } else {
+    window.location.replace(target);
+  }
+</script>
+<noscript><p>JavaScript is needed to hand the sign-in back. Tap the button above.</p></noscript>
+</body>
+</html>
